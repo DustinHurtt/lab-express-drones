@@ -15,6 +15,10 @@ const hbs = require('hbs');
 
 const app = express();
 
+const Drone = require('./models/Drone.model')
+
+const mongoose = require ('mongoose') ;
+
 // ℹ️ This function is getting exported from the config folder. It runs most middlewares
 require('./config')(app);
 
@@ -33,5 +37,10 @@ app.use('/', droneRoutes)
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
+
+mongoose
+  .connect('mongodb://localhost/lab-express-drones') 
+  .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+  .catch(err => console.error('Error connecting to mongo', err));
 
 module.exports = app;
